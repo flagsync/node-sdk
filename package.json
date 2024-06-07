@@ -1,0 +1,57 @@
+{
+  "name": "@flagsync/node-sdk",
+  "version": "0.0.1",
+  "description": "FlagSync SDK for Node.js",
+  "author": "Mike Chabot",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/flagsync/node-client"
+  },
+  "homepage": "https://www.flagsync.com",
+  "type": "module",
+  "types": "dist/legacy/index.d.ts",
+  "main": "dist/legacy/index.cjs",
+  "module": "dist/legacy/index.js",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/modern/index.d.ts",
+        "default": "./dist/modern/index.js"
+      },
+      "require": {
+        "types": "./dist/modern/index.d.cts",
+        "default": "./dist/modern/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "package.json"
+  ],
+  "engines": {
+    "node": ">=16",
+    "npm": ">=6"
+  },
+  "scripts": {
+    "build": "tsup",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "eslint \"src/**/*.ts\" --fix",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@typescript-eslint/eslint-plugin": "^7.3.1",
+    "@typescript-eslint/parser": "^7.3.1",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "prettier": "^3.2.5",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.2",
+    "vite": "^5.2.12",
+    "vitest": "^1.4.0"
+  }
+}
