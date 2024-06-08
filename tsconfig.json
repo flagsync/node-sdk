@@ -4,18 +4,17 @@
   "compilerOptions": {
     "baseUrl": "./",
 
-    /* Code runs in the DOM: */
     "lib": ["es2022"],
 
-    /* Base Options: */
+    /* Base Options */
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "target": "es2022",
+    "target": "es6",
     "allowJs": true,
     "resolveJsonModule": true,
     "moduleDetection": "force",
     "isolatedModules": true,
-    "verbatimModuleSyntax": true,
+    "allowImportingTsExtensions": false,
 
     /* Building for a library: */
     "declaration": true,
@@ -23,11 +22,18 @@
     /* Strictness */
     "strict": true,
     "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
 
     /* Transpiling with TypeScript: */
-    "module": "NodeNext",
+    "moduleResolution": "node",
+    "module": "ES2022",
     "outDir": "dist",
-    "sourceMap": true
+    "sourceMap": true,
+    "paths": {
+      "~sdk/*": ["src/*"],
+      "~api/*": ["src/api/*"],
+      "~config/*": ["src/config/*"],
+      "~logger/*": ["src/logger/*"],
+      "~managers/*": ["src/managers/*"]
+    }
   }
 }
