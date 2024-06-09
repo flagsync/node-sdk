@@ -31,6 +31,7 @@ export function syncManagerFactory(
   }
 
   eventManager.on(FsEvent.SDK_READY, () => {
+    console.log('Starting sync manager');
     manager.start();
   });
 

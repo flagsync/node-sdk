@@ -1,3 +1,3 @@
 export interface IKillManager {
-  kill: () => void;
+  destroy: () => Promise<void>;
 }

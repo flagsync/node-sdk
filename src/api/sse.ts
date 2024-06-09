@@ -18,12 +18,12 @@ export class Sse<
   /**
    * No description
    *
-   * @name SdkSseControllerSse
-   * @request GET:/sse/sdk-updates
+   * @name SdkSseControllerSseServer
+   * @request GET:/sse/sdk-updates/server
    */
-  sdkSseControllerSse = (params: RequestParams = {}) =>
+  sdkSseControllerSseServer = (params: RequestParams = {}) =>
     this.request<void, any>({
-      path: `/sse/sdk-updates`,
+      path: `/sse/sdk-updates/server`,
       method: 'GET',
       ...params,
     });

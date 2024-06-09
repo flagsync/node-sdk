@@ -15,7 +15,7 @@ export const streamManager = (
   settings: FsSettings,
   eventManager: IEventManager,
 ): ISyncManager => {
-  const { urls, log, context } = settings;
+  const { urls, log, sdkContext } = settings;
 
   let es: EventSource;
 
@@ -23,12 +23,12 @@ export const streamManager = (
     /**
      * Create a new EventSource instance and listen for incoming flag updates.
      */
-    es = new EventSource(`${urls.sdk}/sse/sdk-updates`, {
+    es = new EventSource(`${urls.sdk}/sse/sdk-updates/server`, {
       withCredentials: true,
       disableLogger: true,
       headers: {
         'x-ridgeline-key': settings.sdkKey,
-        'x-ridgeline-user-ctx': JSON.stringify(context),
+        'x-ridgeline-sdk-ctx': JSON.stringify(sdkContext),
       },
     });
 
@@ -47,9 +47,9 @@ export const streamManager = (
      */
     es.onmessage = (event) => {
       try {
-        const flagSet = JSON.parse(event.data) as FsFlagSet;
+        const flagRule = JSON.parse(event.data) as FsFlagSet;
         log.debug(formatter(MESSAGE.STREAM_MESSAGE_RECEIVED));
-        eventManager.internal.emit(FsIntervalEvent.UPDATE_RECEIVED, flagSet);
+        eventManager.internal.emit(FsIntervalEvent.UPDATE_RECEIVED, flagRule);
       } catch (error) {
         log.error(formatter(MESSAGE.STREAM_MALFORMED_EVENT), error?.toString());
       }

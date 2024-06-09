@@ -1,6 +1,5 @@
 import { UNREADY_FLAG_VALUE } from '~config/constants';
-
-import { SdkUserContext } from '~api/data-contracts';
+import { FsUserContext } from '~config/types';
 
 import { EvalEngineService } from '~managers/flag/flag-eval-engine/eval-engine.service';
 import { IFlagManager } from '~managers/flag/types';
@@ -13,7 +12,7 @@ export function flagManager(
   trackManager: ITrackManager,
 ): IFlagManager {
   function flag<T>(
-    context: SdkUserContext,
+    context: FsUserContext,
     flagKey: string,
     defaultValue?: T,
   ): T {
@@ -29,13 +28,12 @@ export function flagManager(
     }
 
     const value = evalEngine.getValueToServe(flag, context);
-
-    // TODO: Evaluate flag against user rules
     const flagValue = value ?? defaultValue ?? UNREADY_FLAG_VALUE;
 
     trackManager.impressionsManager.track({
       flagKey,
       flagValue: flagValue as object,
+      context,
     });
 
     return flagValue as T;

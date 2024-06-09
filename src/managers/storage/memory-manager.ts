@@ -1,8 +1,6 @@
 import { FsFlagSet } from '~config/types';
 import { FsSettings } from '~config/types.internal';
 
-import { FeatureFlagEnvironmentDetailDto } from '~api/data-contracts';
-
 import { MESSAGE } from '~logger/messages';
 import { formatMsg } from '~logger/utils';
 
@@ -13,9 +11,9 @@ const formatter = formatMsg.bind(null, 'memory-manager');
 export function memoryManager(params: FsSettings): IStoreManager {
   const { log } = params;
 
-  let flagSet: Record<string, FeatureFlagEnvironmentDetailDto> = {};
+  let flagSet: FsFlagSet = {};
 
-  function set(incoming: Record<string, FeatureFlagEnvironmentDetailDto>) {
+  function set(incoming: FsFlagSet) {
     log.debug(formatter(MESSAGE.STORAGE_SET_FLAG_RULES));
     flagSet = {
       ...flagSet,

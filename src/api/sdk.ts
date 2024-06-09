@@ -19,7 +19,7 @@ import {
 import {
   SdkEnvironmentFlagRulesGetRequest,
   SdkEnvironmentFlagRulesGetResponse,
-  SdkEnvironmentFlagsGetRequest,
+  SdkInitServerRequest,
 } from './data-contracts';
 
 export class Sdk<
@@ -28,21 +28,20 @@ export class Sdk<
   /**
    * No description
    *
-   * @name SdkControllerInitContext
-   * @request POST:/sdk/init
+   * @name SdkControllerInitServerContext
+   * @request POST:/sdk/init-server
    */
-  sdkControllerInitContext = (
-    data: SdkEnvironmentFlagsGetRequest,
+  sdkControllerInitServerContext = (
+    data: SdkInitServerRequest,
     params: RequestParams = {},
   ) =>
     this.request<void, void>({
-      path: `/sdk/init`,
+      path: `/sdk/init-server`,
       method: 'POST',
       body: data,
       type: ContentType.Json,
       ...params,
     });
-
   /**
    * No description
    *

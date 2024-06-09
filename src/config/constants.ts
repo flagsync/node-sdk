@@ -4,15 +4,7 @@ export const UNREADY_FLAG_VALUE = 'control';
 
 export const DEFAULT_CONFIG = {
   sdkKey: undefined,
-  core: {
-    key: undefined,
-    attributes: undefined,
-  },
   bootstrap: {},
-  storage: {
-    type: 'memory',
-    prefix: 'flagsync',
-  },
   sync: {
     type: 'stream',
     pollRate: 60,

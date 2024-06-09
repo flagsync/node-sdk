@@ -1,12 +1,13 @@
-import { SdkTrackEvent } from '~api/data-contracts';
+import { SdkServerTrackEvent, SdkUserContext } from '~api/data-contracts';
 
 export interface IEventsManager {
   start: () => void;
-  pop: () => SdkTrackEvent[];
+  pop: () => SdkServerTrackEvent[];
   isEmpty: () => boolean;
-  flushQueueAndStop: () => void;
+  flushQueueAndStop: () => Promise<void>;
   stopSubmitter: () => void;
   track: (
+    context: SdkUserContext,
     eventKey: string,
     value?: number | null | undefined,
     properties?: Record<string, any>,

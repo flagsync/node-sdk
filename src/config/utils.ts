@@ -15,12 +15,6 @@ function validateSettings(settings: FsSettings): void {
       message: 'sdkKey is required',
     });
   }
-  if (!settings.core.key) {
-    throw new FsServiceError({
-      errorCode: ServiceErrorCode.InvalidConfiguration,
-      message: 'core.key is required',
-    });
-  }
   if (settings.tracking.impressions.pushRate < 30) {
     throw new FsServiceError({
       errorCode: ServiceErrorCode.InvalidConfiguration,
@@ -51,22 +45,38 @@ function validateSettings(settings: FsSettings): void {
       message: 'sync.pollRate must be greater than 30',
     });
   }
+  /**
+   * This can only be thrown by an invalid SDK configuration from the library
+   * itself.
+   */
+  if (!settings.metadata.sdkName || !settings.metadata.sdkVersion) {
+    throw new FsServiceError({
+      errorCode: ServiceErrorCode.InvalidConfiguration,
+      message:
+        'Unable to determine SDK name or version. Please contact support.',
+    });
+  }
 }
 
 export function buildSettingsFromConfig(config: FsConfig): FsSettings {
   const settings = deepmerge<FsSettings, FsConfig>(DEFAULT_CONFIG, config);
   settings.log = loggerFactory(settings, config.logger);
 
-  validateSettings(settings);
+  const metadata = config.metadata ?? {};
 
-  (settings as FsSettings).metadata = config.metadata ?? {
-    sdkName: '__SDK_NAME__',
-    sdkVersion: '__SDK_VERSION__',
+  (settings as FsSettings).metadata = {
+    ...metadata,
+    ...{
+      sdkName: '__SDK_NAME__',
+      sdkVersion: '__SDK_VERSION__',
+    },
   };
 
-  settings.context = {
-    key: settings.core.key,
-    attributes: settings.core.attributes ?? {},
+  validateSettings(settings);
+
+  settings.sdkContext = {
+    sdkName: settings.metadata.sdkName,
+    sdkVersion: settings.metadata.sdkVersion,
   };
 
   settings.platform = 'node';

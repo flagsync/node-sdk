@@ -1,6 +1,6 @@
-import { FeatureFlagEnvironmentDetailDto } from '~api/data-contracts';
+import { FsFlagSet } from '~config/types';
 
 export interface IStoreManager {
-  set: (flagSet: Record<string, FeatureFlagEnvironmentDetailDto>) => void;
-  get: () => Record<string, FeatureFlagEnvironmentDetailDto>;
+  set: (flagSet: FsFlagSet) => void;
+  get: () => FsFlagSet;
 }

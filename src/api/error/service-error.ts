@@ -2,6 +2,7 @@ export enum ServiceErrorCode {
   InvalidSdkKey = 'INVALID_SDK_KEY',
   InvalidConfiguration = 'INVALID_CONFIGURATION',
   UnknownError = 'UNKNOWN_ERROR',
+  InvalidSdkDefinition = 'INVALID_SDK_DEFINITION',
   UserContextNotFound = 'USER_CONTEXT_NOT_FOUND',
 }
 

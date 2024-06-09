@@ -20,8 +20,7 @@ export function eventsManager(
 ): IEventsManager {
   const {
     log,
-    context,
-    metadata,
+    sdkContext,
     tracking: {
       events: { pushRate },
     },
@@ -34,7 +33,9 @@ export function eventsManager(
   let timeout: number | NodeJS.Timeout;
   const interval = pushRate * 1000;
 
-  async function batchSend() {
+  async function batchSend(): Promise<void> {
+    console.log({ empty: cache.isEmpty() });
+
     if (cache.isEmpty()) {
       if (timeout) {
         clearTimeout(timeout);
@@ -45,36 +46,29 @@ export function eventsManager(
 
     const sendQueue = cache.pop();
 
-    track
-      .sdkTrackControllerPostBatchEvents({
-        context,
+    try {
+      await track.sdkTrackControllerPostServerBatchEvents({
         events: sendQueue,
-        sdkContext: {
-          sdkName: metadata.sdkName,
-          sdkVersion: metadata.sdkVersion,
-        },
-      })
-      .then(() => {
-        log.debug(
-          `${formatter(MESSAGE.TRACK_BATCH_SENT)} (${sendQueue.length} events)`,
-        );
-      })
-      .catch(async (e: unknown) => {
-        const error = ServiceErrorFactory.create(e);
-        log.error(
-          formatter(MESSAGE.TRACK_SEND_FAIL),
-          error.path,
-          error.errorCode,
-          error.message,
-        );
-        eventManager.emit(FsEvent.ERROR, {
-          type: 'api',
-          error: error,
-        });
-      })
-      .finally(() => {
-        timeout = setTimeout(batchSend, interval);
+        sdkContext,
       });
+      log.debug(
+        `${formatter(MESSAGE.TRACK_BATCH_SENT)} (${sendQueue.length} events)`,
+      );
+    } catch (e) {
+      const error = ServiceErrorFactory.create(e);
+      log.error(
+        formatter(MESSAGE.TRACK_SEND_FAIL),
+        error.path,
+        error.errorCode,
+        error.message,
+      );
+      eventManager.emit(FsEvent.ERROR, {
+        type: 'api',
+        error: error,
+      });
+    } finally {
+      timeout = setTimeout(batchSend, interval);
+    }
   }
 
   async function flushQueue() {
@@ -87,10 +81,12 @@ export function eventsManager(
     timeout = setTimeout(batchSend, START_DELAY_MS);
   }
 
-  function flushQueueAndStop() {
-    flushQueue().finally(() => {
+  async function flushQueueAndStop(): Promise<void> {
+    try {
+      await flushQueue();
+    } finally {
       stopSubmitter();
-    });
+    }
   }
 
   function stopSubmitter() {

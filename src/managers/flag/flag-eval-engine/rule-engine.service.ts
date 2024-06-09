@@ -1,4 +1,4 @@
-import { FsCore } from '~config/types';
+import { FsUserContext } from '~config/types';
 import { FsSettings } from '~config/types.internal';
 
 import {
@@ -134,7 +134,7 @@ export class RuleEngineService {
    * @private
    */
   private getContextValueByAttribute(
-    context: FsCore,
+    context: FsUserContext,
     clause: TargetingRuleClauseDto,
   ): string | undefined | null {
     const { attribute, customAttribute } = clause;

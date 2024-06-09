@@ -23,8 +23,7 @@ export function impressionsManager(
 ): IImpressionsManager {
   const {
     log,
-    context,
-    metadata,
+    sdkContext,
     tracking: {
       impressions: { pushRate },
     },
@@ -48,36 +47,29 @@ export function impressionsManager(
 
     const sendQueue = cache.pop();
 
-    track
-      .sdkTrackControllerPostBatchImpressions({
-        context,
+    try {
+      await track.sdkTrackControllerPostServerBatchImpressions({
         impressions: sendQueue,
-        sdkContext: {
-          sdkName: metadata.sdkName,
-          sdkVersion: metadata.sdkVersion,
-        },
-      })
-      .then(() => {
-        log.debug(
-          `${formatter(MESSAGE.TRACK_BATCH_SENT)} (${sendQueue.length} impressions)`,
-        );
-      })
-      .catch(async (e: unknown) => {
-        const error = ServiceErrorFactory.create(e);
-        log.error(
-          formatter(MESSAGE.TRACK_SEND_FAIL),
-          error.path,
-          error.errorCode,
-          error.message,
-        );
-        eventManager.emit(FsEvent.ERROR, {
-          type: 'api',
-          error: error,
-        });
-      })
-      .finally(() => {
-        timeout = setTimeout(batchSend, interval);
+        sdkContext,
       });
+      log.debug(
+        `${formatter(MESSAGE.TRACK_BATCH_SENT)} (${sendQueue.length} impressions)`,
+      );
+    } catch (e) {
+      const error = ServiceErrorFactory.create(e);
+      log.error(
+        formatter(MESSAGE.TRACK_SEND_FAIL),
+        error.path,
+        error.errorCode,
+        error.message,
+      );
+      eventManager.emit(FsEvent.ERROR, {
+        type: 'api',
+        error: error,
+      });
+    } finally {
+      timeout = setTimeout(batchSend, interval);
+    }
   }
 
   async function flushQueue() {
@@ -90,10 +82,12 @@ export function impressionsManager(
     timeout = setTimeout(batchSend, START_DELAY_MS);
   }
 
-  function flushQueueAndStop() {
-    flushQueue().finally(() => {
+  async function flushQueueAndStop() {
+    try {
+      await flushQueue();
+    } finally {
       stopSubmitter();
-    });
+    }
   }
 
   function stopSubmitter() {

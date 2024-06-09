@@ -20,7 +20,7 @@ export function killManager(
 
   let killing = false;
 
-  function kill() {
+  async function destroy(): Promise<void> {
     if (!killing) {
       killing = true;
       log.info(format(MESSAGE.KILL_KILLING));
@@ -28,20 +28,18 @@ export function killManager(
         eventManager.off(FsEvent[eventKey as keyof typeof FsEvent]);
       }
       syncManager.kill();
-      trackManager.kill();
       eventManager.kill();
+      await trackManager.kill();
     } else {
       log.info(format(MESSAGE.KILL_ALREADY_KILLING));
     }
   }
 
-  if (typeof window === 'undefined') {
-    process.on('exit', kill); // Process termination event
-    process.on('SIGINT', kill); // Signal handling (SIGINT)
-    process.on('SIGTERM', kill); // Signal handling (SIGTERM)
-  }
+  process.on('exit', destroy); // Process termination event
+  process.on('SIGINT', destroy); // Signal handling (SIGINT)
+  process.on('SIGTERM', destroy); // Signal handling (SIGTERM)
 
   return {
-    kill,
+    destroy,
   };
 }

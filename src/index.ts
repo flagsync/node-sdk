@@ -19,6 +19,7 @@ export { FsServiceError };
 export { ServiceErrorFactory };
 export * from '~config/types';
 export type { LogLevel } from '~logger/types';
+export type { FsUserContext } from '~config/types';
 
 export type FsErrorSource = 'api' | 'sdk';
 export type FsErrorEvent = {
@@ -37,8 +38,6 @@ function clientInstanceFactory(settings: FsSettings): () => FsClient {
 export type FsClient = ReturnType<typeof clientFactory>;
 
 function clientFactory(settings: FsSettings) {
-  const { core } = settings;
-
   const { sdk } = apiClientFactory(settings);
 
   const eventManager = eventManagerFactory();
@@ -55,16 +54,15 @@ function clientFactory(settings: FsSettings) {
   const killer = killManager(settings, eventManager, syncManager, trackManager);
 
   const staticApi = {
-    core,
     Event: FsEvent,
   };
 
   const externalApi = {
-    kill: killer.kill,
     on: eventManager.on,
     once: eventManager.once,
     off: eventManager.off,
     flag: flagManager.flag,
+    destroy: killer.destroy,
     track: trackManager.eventsManager.track,
     waitForReady: () => service.initWithCatch,
     waitForReadyCanThrow: () => service.initWithWithThrow,

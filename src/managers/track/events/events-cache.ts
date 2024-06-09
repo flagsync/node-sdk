@@ -1,6 +1,6 @@
 import { FsSettings } from '~config/types.internal';
 
-import { SdkTrackEvent } from '~api/data-contracts';
+import { SdkServerTrackEvent, SdkUserContext } from '~api/data-contracts';
 
 import { TrackCache } from '~managers/track/caches/track-cache';
 import { ITrackCache } from '~managers/track/caches/types';
@@ -11,8 +11,9 @@ import { formatMsg } from '~logger/utils';
 
 const formatter = formatMsg.bind(null, 'events-cache');
 
-export interface IEventsCache extends ITrackCache<SdkTrackEvent> {
+export interface IEventsCache extends ITrackCache<SdkServerTrackEvent> {
   track(
+    context: SdkUserContext,
     eventKey: string,
     value?: number,
     properties?: Record<string, any>,
@@ -20,7 +21,7 @@ export interface IEventsCache extends ITrackCache<SdkTrackEvent> {
 }
 
 export class EventsCache
-  extends TrackCache<SdkTrackEvent>
+  extends TrackCache<SdkServerTrackEvent>
   implements IEventsCache
 {
   constructor(settings: FsSettings, onFullQueue: () => void) {
@@ -34,6 +35,7 @@ export class EventsCache
   }
 
   track(
+    context: SdkUserContext,
     eventKey: string,
     value?: number | null | undefined,
     properties?: Record<string, any> | null | undefined,
@@ -57,7 +59,8 @@ export class EventsCache
       }
     }
 
-    const event: SdkTrackEvent = {
+    const event: SdkServerTrackEvent = {
+      context,
       eventKey,
       value,
       properties,

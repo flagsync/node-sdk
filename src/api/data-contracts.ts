@@ -14,14 +14,23 @@ export interface SdkUserContext {
   attributes?: object;
 }
 
-export interface SdkContext {
+export interface SdkSdkContext {
   sdkName: string;
   sdkVersion: string;
 }
 
+export interface SdkInitClientRequest {
+  context: SdkUserContext;
+  sdkContext: SdkSdkContext;
+}
+
+export interface SdkInitServerRequest {
+  sdkContext: SdkSdkContext;
+}
+
 export interface SdkEnvironmentFlagsGetRequest {
   context: SdkUserContext;
-  sdkContext: SdkContext;
+  sdkContext: SdkSdkContext;
 }
 
 export interface SdkEnvironmentFlagsGetResponse {
@@ -30,8 +39,7 @@ export interface SdkEnvironmentFlagsGetResponse {
 }
 
 export interface SdkEnvironmentFlagRulesGetRequest {
-  context: SdkUserContext;
-  sdkContext: SdkContext;
+  sdkContext: SdkSdkContext;
 }
 
 export interface VariantDto {
@@ -133,12 +141,11 @@ export interface FeatureFlagEnvironmentDetailDto {
 export interface SdkEnvironmentFlagRulesGetResponse {
   placeholder: FeatureFlagEnvironmentDetailDto[];
   flags: Record<string, FeatureFlagEnvironmentDetailDto>;
-  context: SdkUserContext;
 }
 
 export interface SdkEnvironmentFlagGetRequest {
   context: SdkUserContext;
-  sdkContext: SdkContext;
+  sdkContext: SdkSdkContext;
 }
 
 export interface SdkEnvironmentFlagGetResponse {
@@ -146,27 +153,45 @@ export interface SdkEnvironmentFlagGetResponse {
   context: SdkUserContext;
 }
 
-export interface SdkTrackEvent {
+export interface SdkServerTrackEvent {
   eventKey: string;
   value?: number | null;
   properties?: object | null;
   timestamp: string;
-}
-
-export interface SdkTrackEventRequest {
   context: SdkUserContext;
-  events: SdkTrackEvent[];
-  sdkContext: SdkContext;
 }
 
-export interface SdkTrackImpression {
+export interface SdkClientTrackEventRequest {
+  context: SdkUserContext;
+  events: SdkServerTrackEvent[];
+  sdkContext: SdkSdkContext;
+}
+
+export interface SdkServerTrackEventRequest {
+  events: SdkServerTrackEvent[];
+  sdkContext: SdkSdkContext;
+}
+
+export interface SdkClientTrackImpression {
   flagKey: string;
   flagValue: object;
   timestamp: string;
 }
 
-export interface SdkTrackImpressionsRequest {
-  impressions: SdkTrackImpression[];
+export interface SdkClientTrackImpressionsRequest {
+  impressions: SdkClientTrackImpression[];
   context: SdkUserContext;
-  sdkContext: SdkContext;
+  sdkContext: SdkSdkContext;
+}
+
+export interface SdkServerTrackImpression {
+  flagKey: string;
+  flagValue: object;
+  timestamp: string;
+  context: SdkUserContext;
+}
+
+export interface SdkServerTrackImpressionsRequest {
+  impressions: SdkServerTrackImpression[];
+  sdkContext: SdkSdkContext;
 }

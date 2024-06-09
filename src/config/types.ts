@@ -1,12 +1,13 @@
+import { FeatureFlagEnvironmentDetailDto } from '~api/data-contracts';
+
 import { ILogger, LogLevel } from '~logger/types';
 
-export type FsFlagValue = any;
-export type FsFlagSet = Record<string, FsFlagValue>;
+export type FsFlagSet = Record<string, FeatureFlagEnvironmentDetailDto>;
 
 export type CustomAttributeValue = any;
 export type CustomAttributes = Record<string, CustomAttributeValue>;
 
-export type FsCore = {
+export type FsUserContext = {
   key: string;
   attributes?: CustomAttributes;
 };
@@ -23,7 +24,6 @@ export const Platform = {
 
 export interface FsConfig {
   readonly sdkKey: string;
-  readonly core: FsCore;
   readonly sync?: {
     type?: (typeof SyncType)[keyof typeof SyncType];
     pollRate?: number;
