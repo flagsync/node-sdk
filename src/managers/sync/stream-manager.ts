@@ -23,14 +23,17 @@ export const streamManager = (
     /**
      * Create a new EventSource instance and listen for incoming flag updates.
      */
-    es = new EventSource(`${urls.sdk}/sse/sdk-updates/server`, {
-      withCredentials: true,
-      disableLogger: true,
-      headers: {
-        'x-ridgeline-key': settings.sdkKey,
-        'x-ridgeline-sdk-ctx': JSON.stringify(sdkContext),
+    es = new EventSource(
+      `${urls.sdk}/sse/sdk-updates/server?timestamp=${new Date().getTime()}`,
+      {
+        withCredentials: true,
+        disableLogger: true,
+        headers: {
+          'x-ridgeline-key': settings.sdkKey,
+          'x-ridgeline-sdk-ctx': JSON.stringify(sdkContext),
+        },
       },
-    });
+    );
 
     /**
      * For debug only

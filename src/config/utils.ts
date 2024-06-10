@@ -72,14 +72,14 @@ export function buildSettingsFromConfig(config: FsConfig): FsSettings {
     },
   };
 
-  validateSettings(settings);
-
   settings.sdkContext = {
     sdkName: settings.metadata.sdkName,
     sdkVersion: settings.metadata.sdkVersion,
   };
 
   settings.platform = 'node';
+
+  validateSettings(settings);
 
   return settings;
 }

@@ -34,8 +34,6 @@ export function eventsManager(
   const interval = pushRate * 1000;
 
   async function batchSend(): Promise<void> {
-    console.log({ empty: cache.isEmpty() });
-
     if (cache.isEmpty()) {
       if (timeout) {
         clearTimeout(timeout);
