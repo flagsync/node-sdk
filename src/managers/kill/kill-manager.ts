@@ -24,9 +24,9 @@ export function killManager(
     if (!killing) {
       killing = true;
       log.info(format(MESSAGE.KILL_KILLING));
-      for (const eventKey in FsEvent) {
-        eventManager.off(FsEvent[eventKey as keyof typeof FsEvent]);
-      }
+      // for (const eventKey in FsEvent) {
+      //   eventManager.off(FsEvent[eventKey as keyof typeof FsEvent]);
+      // }
       syncManager.kill();
       eventManager.kill();
       await trackManager.kill();
