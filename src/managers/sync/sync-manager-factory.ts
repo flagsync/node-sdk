@@ -5,14 +5,18 @@ import { FsEvent, IEventManager } from '~managers/event/types';
 import { pollManager } from '~managers/sync/poll-manager';
 import { streamManager } from '~managers/sync/stream-manager';
 import { ISyncManager } from '~managers/sync/types';
+import { formatMsg } from '~logger/utils';
+import { MESSAGE } from '~logger/messages';
 
 const noop = () => {};
+
+const formatter = formatMsg.bind(null, 'sync-manager-factory');
 
 export function syncManagerFactory(
   settings: FsSettings,
   eventManager: IEventManager,
 ): ISyncManager {
-  const { sync } = settings;
+  const { log, sync } = settings;
 
   let manager: ISyncManager;
   switch (sync.type) {
@@ -31,7 +35,7 @@ export function syncManagerFactory(
   }
 
   eventManager.on(FsEvent.SDK_READY, () => {
-    console.log('Starting sync manager');
+    log.debug(`${formatter(MESSAGE.SYNC_STARTED)} - type: ${sync.type}`);
     manager.start();
   });
 

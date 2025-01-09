@@ -54,6 +54,10 @@ const TRACK_MANAGER_MESSAGE = {
   TRACK_STARTING: 'starting submitter',
 } as const;
 
+const SYNC_MANAGER = {
+  SYNC_STARTED: 'syncing started',
+} as const;
+
 const EVAL_ENGINE_MESSAGE = {
   UNSUPPORTED_VARIANT_DATA_TYPE: 'Unsupported variant data type',
 };
@@ -69,4 +73,5 @@ export const MESSAGE = {
   ...TRACK_MANAGER_MESSAGE,
   ...TRACK_CACHE_MESSAGE,
   ...EVAL_ENGINE_MESSAGE,
+  ...SYNC_MANAGER
 } as const;
