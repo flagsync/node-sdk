@@ -18,7 +18,7 @@ async function injectSdkDetails(dist: string) {
     await replaceInFile({
       files: `${dist}/**/*`,
       from: /__SDK_VERSION__/g,
-      to: packageJson.version,
+      to: anticipatedVersion,
     });
   } catch (error) {
     console.error('[injectSdkDetails]:', error);
