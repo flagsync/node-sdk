@@ -8,7 +8,7 @@ import { apiClientFactory } from '~api/clients/api-client';
 import { SdkUserContext } from '~api/data-contracts';
 
 import { eventManagerFactory } from '~managers/event/event-manager-factory';
-import { EventCallback, FsEvent, FsEventType } from '~managers/event/types';
+import { EventCallback, FsEventType } from '~managers/event/types';
 import { flagManagerFactory } from '~managers/flag/flag-manager-factory';
 import { killManager } from '~managers/kill/kill-manager';
 import { serviceManager } from '~managers/service/service-manager';
@@ -17,7 +17,6 @@ import { syncManagerFactory } from '~managers/sync/sync-manager-factory';
 import { trackManagerFactory } from '~managers/track/track-manager-factory';
 
 export class FsClient {
-  public static readonly Event = FsEvent;
   private readonly container: Container;
   private initialized = false;
 
