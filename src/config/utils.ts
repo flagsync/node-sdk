@@ -14,11 +14,9 @@ export function buildSettingsFromConfig(config: FsConfig): FsSettings {
   const metadata = config.metadata ?? {};
 
   (settings as FsSettings).metadata = {
+    sdkName: '__SDK_NAME__',
+    sdkVersion: '__SDK_VERSION__',
     ...metadata,
-    ...{
-      sdkName: '__SDK_NAME__',
-      sdkVersion: '__SDK_VERSION__',
-    },
   };
 
   settings.sdkContext = {
