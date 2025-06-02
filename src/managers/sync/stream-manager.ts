@@ -1,4 +1,4 @@
-import { EventSource } from 'extended-eventsource';
+import { EventSource } from 'eventsource';
 
 import { FsFlagSet } from '~config/types';
 import { FsSettings } from '~config/types.internal';
@@ -27,11 +27,15 @@ export const streamManager = (
       `${urls.sdk}/sse/sdk-updates/server?timestamp=${new Date().getTime()}`,
       {
         withCredentials: true,
-        disableLogger: true,
-        headers: {
-          'x-ridgeline-key': settings.sdkKey,
-          'x-ridgeline-sdk-ctx': JSON.stringify(sdkContext),
-        },
+        fetch: (input, init) =>
+          fetch(input, {
+            ...init,
+            headers: {
+              ...init.headers,
+              'x-ridgeline-key': settings.sdkKey,
+              'x-ridgeline-sdk-ctx': JSON.stringify(sdkContext),
+            },
+          }),
       },
     );
 
