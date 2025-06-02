@@ -14,9 +14,9 @@ dependencies:
   eventemitter3:
     specifier: ^5.0.1
     version: 5.0.1
-  extended-eventsource:
-    specifier: ^1.4.9
-    version: 1.4.9
+  eventsource:
+    specifier: ^4.0.0
+    version: 4.0.0
 
 devDependencies:
   '@trivago/prettier-plugin-sort-imports':
@@ -1618,6 +1618,18 @@ packages:
     resolution: {integrity: sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA==}
     dev: false
 
+  /eventsource-parser@3.0.2:
+    resolution: {integrity: sha512-6RxOBZ/cYgd8usLwsEl+EC09Au/9BcmCKYF2/xbml6DNczf7nv0MQb+7BA2F+li6//I+28VNlQR37XfQtcAJuA==}
+    engines: {node: '>=18.0.0'}
+    dev: false
+
+  /eventsource@4.0.0:
+    resolution: {integrity: sha512-fvIkb9qZzdMxgZrEQDyll+9oJsyaVvY92I2Re+qK0qEJ+w5s0X3dtz+M0VAPOjP1gtU3iqWyjQ0G3nvd5CLZ2g==}
+    engines: {node: '>=20.0.0'}
+    dependencies:
+      eventsource-parser: 3.0.2
+    dev: false
+
   /execa@5.1.1:
     resolution: {integrity: sha512-8uSpZZocAZRBAPIEINJj3Lo9HyGitllczc27Eh5YYojjMFMn8yHMDMaUHE2Jqfq05D/wucwI4JGURyXt1vchyg==}
     engines: {node: '>=10'}
@@ -1647,10 +1659,6 @@ packages:
       signal-exit: 4.1.0
       strip-final-newline: 3.0.0
     dev: true
-
-  /extended-eventsource@1.4.9:
-    resolution: {integrity: sha512-x0SMAw57jEaiBKLQWTatVBZkT/PRuL5hdiEP6s8GKqeQOapBRwnohI6e8zGM0XStolQrQe+L6Wvin8G0UthRbw==}
-    dev: false
 
   /fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
