@@ -2,7 +2,7 @@ import { UNREADY_FLAG_VALUE } from '~config/constants';
 import { FsUserContext } from '~config/types';
 
 import { EvalEngineService } from '~managers/flag/flag-eval-engine/eval-engine.service';
-import { IFlagManager } from '~managers/flag/types';
+import { FlagKey, IFlagManager } from '~managers/flag/types';
 import { IStoreManager } from '~managers/storage/types';
 import { ITrackManager } from '~managers/track/types';
 
@@ -13,7 +13,7 @@ export function flagManager(
 ): IFlagManager {
   function flag<T>(
     context: FsUserContext,
-    flagKey: string,
+    flagKey: FlagKey,
     defaultValue?: T,
   ): T {
     if (!flagKey || typeof flagKey !== 'string') {

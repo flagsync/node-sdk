@@ -10,6 +10,7 @@ import { SdkUserContext } from '~api/data-contracts';
 import { eventManagerFactory } from '~managers/event/event-manager-factory';
 import { EventCallback, FsEventType } from '~managers/event/types';
 import { flagManagerFactory } from '~managers/flag/flag-manager-factory';
+import { FlagKey } from '~managers/flag/types';
 import { killManager } from '~managers/kill/kill-manager';
 import { serviceManager } from '~managers/service/service-manager';
 import { storageManagerFactory } from '~managers/storage/storage-manger-factory';
@@ -87,7 +88,11 @@ export class FsClient {
     this.initialized = true;
   }
 
-  public flag<T>(context: FsUserContext, flagKey: string, defaultValue?: T): T {
+  public flag<T>(
+    context: FsUserContext,
+    flagKey: FlagKey,
+    defaultValue?: T,
+  ): T {
     return this.container
       .get(ServiceKeys.FlagManager)
       .flag(context, flagKey, defaultValue);
