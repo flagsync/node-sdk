@@ -2,7 +2,7 @@ import { UNREADY_FLAG_VALUE } from '~config/constants';
 import { FsUserContext } from '~config/types';
 
 import { EvalEngineService } from '~managers/flag/flag-eval-engine/eval-engine.service';
-import { FlagKey, IFlagManager } from '~managers/flag/types';
+import { FlagKey, IFlagManager, TypedFeatureFlags } from '~managers/flag/types';
 import { IStoreManager } from '~managers/storage/types';
 import { ITrackManager } from '~managers/track/types';
 
@@ -11,20 +11,20 @@ export function flagManager(
   storageManager: IStoreManager,
   trackManager: ITrackManager,
 ): IFlagManager {
-  function flag<T>(
+  function flag<Key extends FlagKey>(
     context: FsUserContext,
-    flagKey: FlagKey,
-    defaultValue?: T,
-  ): T {
+    flagKey: Key,
+    defaultValue?: TypedFeatureFlags[Key],
+  ): TypedFeatureFlags[Key] {
     if (!flagKey || typeof flagKey !== 'string') {
-      return UNREADY_FLAG_VALUE as T;
+      return UNREADY_FLAG_VALUE as TypedFeatureFlags[Key];
     }
 
     const flags = storageManager.get();
     const flag = flags[flagKey];
 
     if (!flag) {
-      return (defaultValue ?? UNREADY_FLAG_VALUE) as T;
+      return (defaultValue ?? UNREADY_FLAG_VALUE) as TypedFeatureFlags[Key];
     }
 
     const value = evalEngine.getValueToServe(flag, context);
@@ -36,7 +36,7 @@ export function flagManager(
       context,
     });
 
-    return flagValue as T;
+    return flagValue;
   }
 
   return {

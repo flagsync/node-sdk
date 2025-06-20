@@ -2,13 +2,16 @@ import { SdkUserContext } from '~api/data-contracts';
 
 export interface FeatureFlags {}
 
-/**
- * Add a fallback in the event the user has not run the CLI type generator
- */
-export type FlagKey = [keyof FeatureFlags] extends [never]
-  ? string
-  : keyof FeatureFlags;
+export type TypedFeatureFlags = keyof FeatureFlags extends never
+  ? Record<string, unknown>
+  : { [K in keyof FeatureFlags]: FeatureFlags[K] };
+
+export type FlagKey = keyof TypedFeatureFlags;
 
 export interface IFlagManager {
-  flag: <T>(context: SdkUserContext, flagKey: FlagKey, defaultValue?: T) => T;
+  flag<Key extends FlagKey>(
+    context: SdkUserContext,
+    flagKey: Key,
+    defaultValue?: TypedFeatureFlags[Key],
+  ): TypedFeatureFlags[Key];
 }
