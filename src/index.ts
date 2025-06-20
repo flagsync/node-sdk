@@ -16,6 +16,8 @@ export type {
   FsEventType,
 } from '~managers/event/types';
 
+export type { FeatureFlags, FlagKey } from '~managers/flag/types';
+
 export { FsEvent } from '~managers/event/types';
 
 export type FsErrorSource = 'api' | 'sdk';
