@@ -5,8 +5,9 @@ import { FsEvent, IEventManager } from '~managers/event/types';
 import { pollManager } from '~managers/sync/poll-manager';
 import { streamManager } from '~managers/sync/stream-manager';
 import { ISyncManager } from '~managers/sync/types';
-import { formatMsg } from '~logger/utils';
+
 import { MESSAGE } from '~logger/messages';
+import { formatMsg } from '~logger/utils';
 
 const noop = () => {};
 

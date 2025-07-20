@@ -73,5 +73,5 @@ export const MESSAGE = {
   ...TRACK_MANAGER_MESSAGE,
   ...TRACK_CACHE_MESSAGE,
   ...EVAL_ENGINE_MESSAGE,
-  ...SYNC_MANAGER
+  ...SYNC_MANAGER,
 } as const;

@@ -2,16 +2,14 @@ import { SdkUserContext } from '~api/data-contracts';
 
 export interface FeatureFlags {}
 
-export type TypedFeatureFlags = keyof FeatureFlags extends never
-  ? Record<string, unknown>
-  : { [K in keyof FeatureFlags]: FeatureFlags[K] };
-
-export type FlagKey = keyof TypedFeatureFlags;
-
 export interface IFlagManager {
-  flag<Key extends FlagKey>(
+  // Overload for typed flag keys (when using CLI-generated types)
+  flag<Key extends keyof FeatureFlags>(
     context: SdkUserContext,
     flagKey: Key,
-    defaultValue?: TypedFeatureFlags[Key],
-  ): TypedFeatureFlags[Key];
+    defaultValue?: FeatureFlags[Key],
+  ): FeatureFlags[Key];
+
+  // Overload for generic return types (when not using CLI-generated types)
+  flag<T>(context: SdkUserContext, flagKey: string, defaultValue?: T): T;
 }

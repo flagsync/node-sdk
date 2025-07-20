@@ -9,8 +9,6 @@
  * ---------------------------------------------------------------
  */
 
-import { FlagKey } from '~managers/flag/types';
-
 export interface SdkUserContext {
   key: string;
   attributes?: object;
@@ -187,7 +185,7 @@ export interface SdkClientTrackImpressionsRequest {
 }
 
 export interface SdkServerTrackImpression {
-  flagKey: FlagKey;
+  flagKey: string;
   flagValue: object;
   timestamp: string;
   context: SdkUserContext;

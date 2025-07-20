@@ -2,7 +2,7 @@ import { UNREADY_FLAG_VALUE } from '~config/constants';
 import { FsUserContext } from '~config/types';
 
 import { EvalEngineService } from '~managers/flag/flag-eval-engine/eval-engine.service';
-import { FlagKey, IFlagManager, TypedFeatureFlags } from '~managers/flag/types';
+import { FeatureFlags, IFlagManager } from '~managers/flag/types';
 import { IStoreManager } from '~managers/storage/types';
 import { ITrackManager } from '~managers/track/types';
 
@@ -11,20 +11,35 @@ export function flagManager(
   storageManager: IStoreManager,
   trackManager: ITrackManager,
 ): IFlagManager {
-  function flag<Key extends FlagKey>(
+  // Overload for typed flag keys (when using CLI-generated types)
+  function flag<Key extends keyof FeatureFlags>(
     context: FsUserContext,
     flagKey: Key,
-    defaultValue?: TypedFeatureFlags[Key],
-  ): TypedFeatureFlags[Key] {
+    defaultValue?: FeatureFlags[Key],
+  ): FeatureFlags[Key];
+
+  // Overload for generic return types (when not using CLI-generated types)
+  function flag<T>(
+    context: FsUserContext,
+    flagKey: string,
+    defaultValue?: T,
+  ): T;
+
+  // Implementation
+  function flag<T = any>(
+    context: FsUserContext,
+    flagKey: string,
+    defaultValue?: T,
+  ): T {
     if (!flagKey || typeof flagKey !== 'string') {
-      return UNREADY_FLAG_VALUE as TypedFeatureFlags[Key];
+      return UNREADY_FLAG_VALUE as T;
     }
 
     const flags = storageManager.get();
     const flag = flags[flagKey];
 
     if (!flag) {
-      return (defaultValue ?? UNREADY_FLAG_VALUE) as TypedFeatureFlags[Key];
+      return (defaultValue ?? UNREADY_FLAG_VALUE) as T;
     }
 
     const value = evalEngine.getValueToServe(flag, context);
@@ -36,7 +51,7 @@ export function flagManager(
       context,
     });
 
-    return flagValue;
+    return flagValue as T;
   }
 
   return {

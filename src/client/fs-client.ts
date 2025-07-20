@@ -10,7 +10,7 @@ import { SdkUserContext } from '~api/data-contracts';
 import { eventManagerFactory } from '~managers/event/event-manager-factory';
 import { EventCallback, FsEventType } from '~managers/event/types';
 import { flagManagerFactory } from '~managers/flag/flag-manager-factory';
-import { FlagKey, TypedFeatureFlags } from '~managers/flag/types';
+import { FeatureFlags } from '~managers/flag/types';
 import { killManager } from '~managers/kill/kill-manager';
 import { serviceManager } from '~managers/service/service-manager';
 import { storageManagerFactory } from '~managers/storage/storage-manger-factory';
@@ -88,14 +88,25 @@ export class FsClient {
     this.initialized = true;
   }
 
-  public flag<Key extends FlagKey>(
+  // Overload for typed flag keys (when using CLI-generated types)
+  public flag<Key extends keyof FeatureFlags>(
     context: FsUserContext,
     flagKey: Key,
-    defaultValue?: TypedFeatureFlags[Key],
-  ): TypedFeatureFlags[Key] {
+    defaultValue?: FeatureFlags[Key],
+  ): FeatureFlags[Key];
+
+  // Overload for generic return types (when not using CLI-generated types)
+  public flag<T>(context: FsUserContext, flagKey: string, defaultValue?: T): T;
+
+  // Implementation
+  public flag<T = any>(
+    context: FsUserContext,
+    flagKey: string,
+    defaultValue?: T,
+  ): T {
     return this.container
       .get(ServiceKeys.FlagManager)
-      .flag(context, flagKey, defaultValue);
+      .flag(context, flagKey as any, defaultValue) as T;
   }
 
   public destroy(): Promise<void> {
