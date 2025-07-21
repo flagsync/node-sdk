@@ -1,6 +1,6 @@
 import { SdkUserContext } from '~api/data-contracts';
 
-export interface FeatureFlags {}
+export declare interface FeatureFlags {}
 
 export interface IFlagManager {
   // Overload for typed flag keys (when using CLI-generated types)
