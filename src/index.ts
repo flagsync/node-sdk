@@ -16,7 +16,12 @@ export type {
   FsEventType,
 } from '~managers/event/types';
 
-export type { FeatureFlags } from '~managers/flag/types';
+export type {
+  FeatureFlags,
+  TypedFeatures,
+  FlagValue,
+  FlagKey,
+} from '~managers/flag/types';
 
 export { FsEvent } from '~managers/event/types';
 
