@@ -6,7 +6,7 @@ export type FlagValue = string | number | boolean | object;
 export interface FeatureFlags {}
 
 export type TypedFeatures = keyof FeatureFlags extends never
-  ? Record<string, unknown>
+  ? Record<string, never>
   : { [K in keyof FeatureFlags]: FeatureFlags[K] };
 
 export type FlagKey = keyof TypedFeatures;
