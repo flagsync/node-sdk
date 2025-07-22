@@ -10,7 +10,7 @@ import { SdkUserContext } from '~api/data-contracts';
 import { eventManagerFactory } from '~managers/event/event-manager-factory';
 import { EventCallback, FsEventType } from '~managers/event/types';
 import { flagManagerFactory } from '~managers/flag/flag-manager-factory';
-import { TypedFeatures } from '~managers/flag/types';
+import { FeatureFlags } from '~managers/flag/types';
 import { killManager } from '~managers/kill/kill-manager';
 import { serviceManager } from '~managers/service/service-manager';
 import { storageManagerFactory } from '~managers/storage/storage-manger-factory';
@@ -89,11 +89,11 @@ export class FsClient {
   }
 
   // Overload for typed flag keys (when using CLI-generated types)
-  public flag<Key extends keyof TypedFeatures>(
+  public flag<Key extends keyof FeatureFlags>(
     context: FsUserContext,
     flagKey: Key,
-    defaultValue?: TypedFeatures[Key],
-  ): TypedFeatures[Key];
+    defaultValue?: FeatureFlags[Key],
+  ): FeatureFlags[Key];
 
   // Overload for generic return types (when not using CLI-generated types)
   public flag<T>(context: FsUserContext, flagKey: string, defaultValue?: T): T;

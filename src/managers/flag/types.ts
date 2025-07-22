@@ -13,11 +13,11 @@ export type FlagKey = keyof TypedFeatures;
 
 export interface IFlagManager {
   // Overload for typed flag keys (when using CLI-generated types)
-  flag<Key extends keyof TypedFeatures>(
+  flag<Key extends keyof FeatureFlags>(
     context: SdkUserContext,
     flagKey: Key,
-    defaultValue?: TypedFeatures[Key],
-  ): TypedFeatures[Key];
+    defaultValue?: FeatureFlags[Key],
+  ): FeatureFlags[Key];
 
   // Overload for generic return types (when not using CLI-generated types)
   flag<T>(context: SdkUserContext, flagKey: string, defaultValue?: T): T;

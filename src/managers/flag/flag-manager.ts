@@ -2,7 +2,7 @@ import { UNREADY_FLAG_VALUE } from '~config/constants';
 import { FsUserContext } from '~config/types';
 
 import { EvalEngineService } from '~managers/flag/flag-eval-engine/eval-engine.service';
-import { IFlagManager, TypedFeatures } from '~managers/flag/types';
+import { FeatureFlags, IFlagManager } from '~managers/flag/types';
 import { IStoreManager } from '~managers/storage/types';
 import { ITrackManager } from '~managers/track/types';
 
@@ -12,11 +12,11 @@ export function flagManager(
   trackManager: ITrackManager,
 ): IFlagManager {
   // Overload for typed flag keys (when using CLI-generated types)
-  function flag<Key extends keyof TypedFeatures>(
+  function flag<Key extends keyof FeatureFlags>(
     context: FsUserContext,
     flagKey: Key,
-    defaultValue?: TypedFeatures[Key],
-  ): TypedFeatures[Key];
+    defaultValue?: FeatureFlags[Key],
+  ): FeatureFlags[Key];
 
   // Overload for generic return types (when not using CLI-generated types)
   function flag<T>(
@@ -32,7 +32,7 @@ export function flagManager(
     defaultValue?: T,
   ): T {
     if (!flagKey || typeof flagKey !== 'string') {
-      return UNREADY_FLAG_VALUE as T;
+      return (defaultValue ?? UNREADY_FLAG_VALUE) as T;
     }
 
     const flags = storageManager.get();
