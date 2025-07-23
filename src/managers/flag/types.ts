@@ -1,24 +1,20 @@
 import { SdkUserContext } from '~api/data-contracts';
 
-// export declare interface FeatureFlags {}
-
-export type FlagValue = string | number | boolean | object;
 export interface FeatureFlags {}
 
-export type TypedFeatures = keyof FeatureFlags extends never
-  ? Record<string, never>
-  : { [K in keyof FeatureFlags]: FeatureFlags[K] };
+export type IsFeatureFlagsEmpty<T> = keyof T extends never ? true : false;
+declare const NoExplicitReturn: unique symbol;
+export type NoExplicitReturnType = typeof NoExplicitReturn;
 
-export type FlagKey = keyof TypedFeatures;
+export type FlagReturnType<TReturn, TKey extends string, TFeatureFlags> =
+  IsFeatureFlagsEmpty<TFeatureFlags> extends true
+    ? TReturn extends NoExplicitReturnType
+      ? unknown
+      : TReturn
+    : TKey extends keyof TFeatureFlags
+      ? TFeatureFlags[TKey]
+      : never;
 
 export interface IFlagManager {
-  // Overload for typed flag keys (when using CLI-generated types)
-  flag<Key extends keyof FeatureFlags>(
-    context: SdkUserContext,
-    flagKey: Key,
-    defaultValue?: FeatureFlags[Key],
-  ): FeatureFlags[Key];
-
-  // Overload for generic return types (when not using CLI-generated types)
   flag<T>(context: SdkUserContext, flagKey: string, defaultValue?: T): T;
 }
