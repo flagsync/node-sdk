@@ -3,7 +3,7 @@ import { SdkUserContext } from '~api/data-contracts';
 export interface FeatureFlags {}
 
 export type IsFeatureFlagsEmpty<T> = keyof T extends never ? true : false;
-declare const NoExplicitReturn: unique symbol;
+export declare const NoExplicitReturn: unique symbol;
 export type NoExplicitReturnType = typeof NoExplicitReturn;
 
 export type FlagReturnType<TReturn, TKey extends string, TFeatureFlags> =
