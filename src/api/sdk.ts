@@ -36,7 +36,7 @@ export class Sdk<
     params: RequestParams = {},
   ) =>
     this.request<void, void>({
-      path: `/sdk/init-server`,
+      path: `/worker/sdk/init-server`,
       method: 'POST',
       body: data,
       type: ContentType.Json,
@@ -46,16 +46,14 @@ export class Sdk<
    * No description
    *
    * @name SdkControllerGetFlagRules
-   * @request POST:/sdk/rules
+   * @request GET:/sdk/rules
    */
   sdkControllerGetFlagRules = (
-    data: SdkEnvironmentFlagRulesGetRequest,
     params: RequestParams = {},
   ) =>
     this.request<SdkEnvironmentFlagRulesGetResponse, void>({
-      path: `/sdk/rules`,
-      method: 'POST',
-      body: data,
+      path: `/worker/sdk/rules`,
+      method: 'GET',
       type: ContentType.Json,
       format: 'json',
       ...params,
