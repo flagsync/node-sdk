@@ -26,11 +26,7 @@ export function serviceManager(
     .sdkControllerInitServerContext({
       sdkContext,
     })
-    .then(() =>
-      sdk.sdkControllerGetFlagRules({
-        sdkContext,
-      }),
-    )
+    .then(() => sdk.sdkControllerGetFlagRules())
     .then((res) => {
       storageManager.set(res?.flags ?? {});
       log.debug(format(MESSAGE.SDK_READY));
