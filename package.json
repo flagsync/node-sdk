@@ -1,6 +1,6 @@
 {
   "name": "@flagsync/node-sdk",
-  "version": "0.7.2-alpha.0",
+  "version": "0.8.0",
   "description": "FlagSync SDK for Node.js",
   "author": "Mike Chabot",
   "license": "Apache-2.0",
