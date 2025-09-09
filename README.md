@@ -6,7 +6,7 @@ The `@flagsync/node-sdk` integrates into Node.js applications for server-side fe
 [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/flagsync.svg?style=social&label=Follow%20%40flagsync)](https://twitter.com/flagsync)
 
 ## Compatibility
-- Compatible with Node.js 16+ and ES5
+- Compatible with Node.js 18+ and ES5
 - TypeScript is fully supported
 
 ## Getting Started
