@@ -1,4 +1,4 @@
-import { SdkServerTrackEvent, SdkUserContext } from '~api/data-contracts';
+import { SdkServerTrackEvent, SdkUserContext } from '~api/types';
 
 export interface IEventsManager {
   start: () => void;

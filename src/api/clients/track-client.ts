@@ -1,29 +1,11 @@
-/* eslint-disable */
-
-/* tslint:disable */
-
-/*
- * ---------------------------------------------------------------
- * ## THIS FILE WAS GENERATED VIA SWAGGER-TYPESCRIPT-API        ##
- * ##                                                           ##
- * ## AUTHOR: acacode                                           ##
- * ## SOURCE: https://github.com/acacode/swagger-typescript-api ##
- * ---------------------------------------------------------------
- */
-import {
-  ContentType,
-  HttpClient,
-  RequestParams,
-} from '~api/clients/http-client';
+import { HttpClient, RequestParams } from '~api/clients/http-client';
 
 import {
   SdkServerTrackEventRequest,
   SdkServerTrackImpressionsRequest,
-} from './data-contracts';
+} from '../types';
 
-export class Track<
-  SecurityDataType = unknown,
-> extends HttpClient<SecurityDataType> {
+export class TrackClient extends HttpClient {
   /**
    * No description
    *
@@ -34,11 +16,10 @@ export class Track<
     data: SdkServerTrackEventRequest,
     params: RequestParams = {},
   ) =>
-    this.request<void, void>({
+    this.request<void>({
       path: `/track/events/server`,
       method: 'POST',
       body: data,
-      type: ContentType.Json,
       ...params,
     });
 
@@ -52,11 +33,10 @@ export class Track<
     data: SdkServerTrackImpressionsRequest,
     params: RequestParams = {},
   ) =>
-    this.request<void, void>({
+    this.request<void>({
       path: `/track/impressions/server`,
       method: 'POST',
       body: data,
-      type: ContentType.Json,
       ...params,
     });
 }

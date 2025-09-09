@@ -6,7 +6,7 @@ import {
   TargetingRuleClauseDto,
   TargetingRuleClauseValueDto,
   VariantEnvironmentTargetingRuleDto,
-} from '~api/data-contracts';
+} from '~api/types';
 
 import {
   TargetingRuleClauseAttributeCode,

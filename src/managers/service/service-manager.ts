@@ -2,7 +2,7 @@ import { FsSettings } from '~config/types.internal';
 
 import { FsServiceError } from '~api/error/service-error';
 import { ServiceErrorFactory } from '~api/error/service-error-factory';
-import { Sdk } from '~api/sdk';
+import { SdkClient } from '~api/clients/sdk-client';
 
 import { FsEvent, IEventManager } from '~managers/event/types';
 import { IStoreManager } from '~managers/storage/types';
@@ -16,7 +16,7 @@ const format = formatMsg.bind(null, 'service-manager');
 
 export function serviceManager(
   settings: FsSettings,
-  sdk: Sdk<any>,
+  sdk: SdkClient,
   storageManager: IStoreManager,
   eventEmitter: IEventManager,
 ): IServiceManager {

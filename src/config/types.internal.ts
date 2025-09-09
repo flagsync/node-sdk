@@ -1,6 +1,6 @@
 import { Platform, SyncType } from '~config/types';
 
-import { SdkSdkContext } from '~api/data-contracts';
+import { SdkSdkContext } from '~api/types';
 
 import { ILogger, LogLevel } from '~logger/types';
 
@@ -8,20 +8,23 @@ export interface FsSettings {
   readonly sdkKey: string;
   readonly sync: {
     type: (typeof SyncType)[keyof typeof SyncType];
-    pollRate: number;
+    pollRateInSec: number;
   };
   readonly tracking: {
     impressions: {
       maxQueueSize: number;
-      pushRate: number;
+      pushRateInSec: number;
     };
     events: {
       maxQueueSize: number;
-      pushRate: number;
+      pushRateInSec: number;
     };
   };
   readonly urls: {
-    sdk: string;
+    ws: string;
+    sse: string;
+    flags: string;
+    events: string;
   };
   readonly logLevel?: LogLevel;
   log: ILogger;

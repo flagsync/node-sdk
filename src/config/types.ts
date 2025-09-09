@@ -1,4 +1,4 @@
-import { FeatureFlagEnvironmentDetailDto } from '~api/data-contracts';
+import { FeatureFlagEnvironmentDetailDto } from '~api/types';
 
 import { ILogger, LogLevel } from '~logger/types';
 
@@ -13,7 +13,8 @@ export type FsUserContext = {
 };
 
 export const SyncType = {
-  Stream: 'stream',
+  Sse: 'sse',
+  Ws: 'ws',
   Poll: 'poll',
   Off: 'off',
 } as const;
@@ -22,24 +23,37 @@ export const Platform = {
   Node: 'node',
 } as const;
 
+type PollingSync = {
+  type: typeof SyncType.Poll;
+  pollRateInSec: number;
+};
+
+type NonPollingSync = {
+  type?: Exclude<
+    (typeof SyncType)[keyof typeof SyncType],
+    typeof SyncType.Poll
+  >;
+  pollRateInSec?: never;
+};
+
 export interface FsConfig {
   readonly sdkKey: string;
-  readonly sync?: {
-    type?: (typeof SyncType)[keyof typeof SyncType];
-    pollRate?: number;
-  };
+  readonly sync?: PollingSync | NonPollingSync;
   readonly tracking?: {
     impressions?: {
       maxQueueSize: number;
-      pushRate: number;
+      pushRateInSec: number;
     };
     events?: {
       maxQueueSize: number;
-      pushRate: number;
+      pushRateInSec: number;
     };
   };
   readonly urls?: {
-    sdk?: string;
+    ws?: string;
+    sse?: string;
+    flags?: string;
+    events?: string;
   };
   logger?: Partial<ILogger>;
   readonly logLevel?: LogLevel;

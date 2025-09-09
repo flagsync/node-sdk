@@ -1,4 +1,4 @@
-import { SdkUserContext } from '~api/data-contracts';
+import { SdkUserContext } from '~api/types';
 
 export interface FeatureFlags {}
 

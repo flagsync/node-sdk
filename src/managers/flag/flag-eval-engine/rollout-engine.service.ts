@@ -2,10 +2,7 @@ import * as crypto from 'crypto';
 
 import { FsSettings } from '~config/types.internal';
 
-import {
-  FeatureFlagEnvironmentDetailDto,
-  SdkUserContext,
-} from '~api/data-contracts';
+import { FeatureFlagEnvironmentDetailDto, SdkUserContext } from '~api/types';
 
 import { ILogger } from '~logger/types';
 

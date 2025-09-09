@@ -1,4 +1,4 @@
-import { SdkServerTrackEvent } from '~api/data-contracts';
+import { SdkServerTrackEvent } from '~api/types';
 
 import { ITrackCacheLogStrategy } from '~managers/track/caches/types';
 

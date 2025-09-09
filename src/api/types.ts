@@ -1,14 +1,3 @@
-/* eslint-disable */
-/* tslint:disable */
-/*
- * ---------------------------------------------------------------
- * ## THIS FILE WAS GENERATED VIA SWAGGER-TYPESCRIPT-API        ##
- * ##                                                           ##
- * ## AUTHOR: acacode                                           ##
- * ## SOURCE: https://github.com/acacode/swagger-typescript-api ##
- * ---------------------------------------------------------------
- */
-
 export interface SdkUserContext {
   key: string;
   attributes?: object;
@@ -19,26 +8,7 @@ export interface SdkSdkContext {
   sdkVersion: string;
 }
 
-export interface SdkInitClientRequest {
-  context: SdkUserContext;
-  sdkContext: SdkSdkContext;
-}
-
 export interface SdkInitServerRequest {
-  sdkContext: SdkSdkContext;
-}
-
-export interface SdkEnvironmentFlagsGetRequest {
-  context: SdkUserContext;
-  sdkContext: SdkSdkContext;
-}
-
-export interface SdkEnvironmentFlagsGetResponse {
-  flags: object;
-  context: SdkUserContext;
-}
-
-export interface SdkEnvironmentFlagRulesGetRequest {
   sdkContext: SdkSdkContext;
 }
 
@@ -143,28 +113,12 @@ export interface SdkEnvironmentFlagRulesGetResponse {
   flags: Record<string, FeatureFlagEnvironmentDetailDto>;
 }
 
-export interface SdkEnvironmentFlagGetRequest {
-  context: SdkUserContext;
-  sdkContext: SdkSdkContext;
-}
-
-export interface SdkEnvironmentFlagGetResponse {
-  flag: object;
-  context: SdkUserContext;
-}
-
 export interface SdkServerTrackEvent {
   eventKey: string;
   value?: number | null;
   properties?: object | null;
   timestamp: string;
   context: SdkUserContext;
-}
-
-export interface SdkClientTrackEventRequest {
-  context: SdkUserContext;
-  events: SdkServerTrackEvent[];
-  sdkContext: SdkSdkContext;
 }
 
 export interface SdkServerTrackEventRequest {
@@ -176,12 +130,6 @@ export interface SdkClientTrackImpression {
   flagKey: string;
   flagValue: object;
   timestamp: string;
-}
-
-export interface SdkClientTrackImpressionsRequest {
-  impressions: SdkClientTrackImpression[];
-  context: SdkUserContext;
-  sdkContext: SdkSdkContext;
 }
 
 export interface SdkServerTrackImpression {

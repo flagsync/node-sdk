@@ -1,9 +1,6 @@
 import { FsSettings } from '~config/types.internal';
 
-import {
-  FeatureFlagEnvironmentDetailDto,
-  SdkUserContext,
-} from '~api/data-contracts';
+import { FeatureFlagEnvironmentDetailDto, SdkUserContext } from '~api/types';
 
 import { RolloutEngineService } from '~managers/flag/flag-eval-engine/rollout-engine.service';
 import { RuleEngineService } from '~managers/flag/flag-eval-engine/rule-engine.service';

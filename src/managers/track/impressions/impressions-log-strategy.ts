@@ -1,4 +1,4 @@
-import { SdkServerTrackImpression } from '~api/data-contracts';
+import { SdkServerTrackImpression } from '~api/types';
 
 import { ITrackCacheLogStrategy } from '~managers/track/caches/types';
 

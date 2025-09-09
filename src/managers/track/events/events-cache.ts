@@ -1,6 +1,6 @@
 import { FsSettings } from '~config/types.internal';
 
-import { SdkServerTrackEvent, SdkUserContext } from '~api/data-contracts';
+import { SdkServerTrackEvent, SdkUserContext } from '~api/types';
 
 import { TrackCache } from '~managers/track/caches/track-cache';
 import { ITrackCache } from '~managers/track/caches/types';

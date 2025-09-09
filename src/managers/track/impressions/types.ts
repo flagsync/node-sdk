@@ -1,4 +1,4 @@
-import { SdkServerTrackImpression } from '~api/data-contracts';
+import { SdkServerTrackImpression } from '~api/types';
 
 export type PartialTrackImpression = Pick<
   SdkServerTrackImpression,

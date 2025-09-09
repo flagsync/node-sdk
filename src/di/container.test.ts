@@ -9,25 +9,18 @@ import { Container } from './container';
 describe('Container', () => {
   const mockSettings: FsSettings = {
     sdkKey: 'test-key',
-    core: {
-      key: 'test-key',
-    },
-    storage: {
-      type: 'memory',
-      prefix: 'flagsync',
-    },
     sync: {
       type: 'poll',
-      pollRate: 60,
+      pollRateInSec: 60,
     },
     tracking: {
       impressions: {
         maxQueueSize: 50,
-        pushRate: 60,
+        pushRateInSec: 60,
       },
       events: {
         maxQueueSize: 50,
-        pushRate: 60,
+        pushRateInSec: 60,
       },
     },
     log: new Logger({
@@ -35,18 +28,17 @@ describe('Container', () => {
       customLogger: console,
     }),
     urls: {
-      sdk: 'https://sdk.flagsync.com',
+      ws: 'https://sdk.flagsync.com/worker',
+      flags: 'https://sdk.flagsync.com/worker',
+      sse: 'https://sdk.flagsync.com',
+      events: 'https://sdk.flagsync.com',
     },
     metadata: {
       sdkName: 'test-sdk',
       sdkVersion: '1.0.0',
     },
-    platform: 'browser',
+    platform: 'node',
     customLogger: {},
-    context: {
-      key: 'test-key',
-      attributes: {},
-    },
     sdkContext: {
       sdkName: 'test-sdk',
       sdkVersion: '1.0.0',
@@ -86,7 +78,9 @@ describe('Container', () => {
 
     it('should register and retrieve a service', () => {
       const mockService = { test: 'service' };
+      // @ts-expect-error not a valid service key
       container.register('test', () => mockService);
+      // @ts-expect-error not a valid service key
       expect(container.get('test')).toBe(mockService);
     });
 
@@ -94,21 +88,27 @@ describe('Container', () => {
       const mockService1 = { test: 'service1' };
       const mockService2 = { test: 'service2' };
 
+      // @ts-expect-error not a valid service key
       container.register('test', () => mockService1);
+      // @ts-expect-error not a valid service key
       expect(container.get('test')).toBe(mockService1);
 
+      // @ts-expect-error not a valid service key
       container.register('test', () => mockService2);
+      // @ts-expect-error not a valid service key
       expect(container.get('test')).toBe(mockService2);
     });
 
     it('should throw when getting non-existent service', () => {
       expect(() => {
+        // @ts-expect-error not a valid service key
         container.get('nonexistent');
       }).toThrowError("Service 'nonexistent' not found");
     });
 
     it('should create service immediately on registration', () => {
       const factory = vi.fn().mockReturnValue({});
+      // @ts-expect-error not a valid service key
       container.register('test', factory);
       expect(factory).toHaveBeenCalledTimes(1);
     });
@@ -123,14 +123,18 @@ describe('Container', () => {
 
     it('should resolve nested dependencies', () => {
       const serviceA = { name: 'A' };
+      // @ts-expect-error not a valid service key
       container.register('serviceA', () => serviceA);
 
       type ServiceB = { name: string; a: typeof serviceA };
+      // @ts-expect-error not a valid service key
       container.register<ServiceB>('serviceB', (c) => ({
         name: 'B',
+        // @ts-expect-error not a valid service key
         a: c.get('serviceA'),
       }));
 
+      // @ts-expect-error not a valid service key
       const b = container.get<ServiceB>('serviceB');
       expect(b).toEqual({ name: 'B', a: serviceA });
     });
@@ -139,9 +143,11 @@ describe('Container', () => {
   describe('lifecycle', () => {
     it('should clear all services', () => {
       const container = Container.getInstance(mockSettings);
+      // @ts-expect-error not a valid service key
       container.register('test', () => ({}));
 
       container.clear();
+      // @ts-expect-error not a valid service key
       expect(container.hasService('test')).toBe(false);
     });
 
@@ -159,6 +165,7 @@ describe('Container', () => {
       const container = Container.getInstance(mockSettings);
 
       expect(() => {
+        // @ts-expect-error not a valid service key
         container.register('errorService', () => {
           throw new Error('Factory error');
         });
@@ -169,14 +176,17 @@ describe('Container', () => {
       const container = Container.getInstance(mockSettings);
       const validService = { valid: true };
 
+      // @ts-expect-error not a valid service key
       container.register('validService', () => validService);
 
       expect(() => {
+        // @ts-expect-error not a valid service key
         container.register('errorService', () => {
           throw new Error('Factory error');
         });
       }).toThrowError();
 
+      // @ts-expect-error not a valid service key
       expect(container.get('validService')).toBe(validService);
     });
   });
@@ -194,10 +204,14 @@ describe('Container', () => {
         value: 42,
       };
 
+      // @ts-expect-error not a valid service key
       container.register<TestService>('typedService', () => testService);
+      // @ts-expect-error not a valid service key
       const retrieved = container.get<TestService>('typedService');
 
+      // @ts-expect-error not a valid service key
       expect(retrieved.name).toBe('test');
+      // @ts-expect-error not a valid service key
       expect(retrieved.value).toBe(42);
     });
   });

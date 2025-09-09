@@ -1,6 +1,6 @@
 import { FsSettings } from '~config/types.internal';
 
-import { apiClientFactory } from '~api/clients/api-client';
+import { apiClientFactory } from '~api/api-client-factory';
 import { ServiceErrorFactory } from '~api/error/service-error-factory';
 
 import { FsEvent, FsIntervalEvent, IEventManager } from '~managers/event/types';
@@ -15,25 +15,23 @@ export function pollManager(
   settings: FsSettings,
   eventManager: IEventManager,
 ): ISyncManager {
-  const { log, sync, sdkContext } = settings;
+  const { log, sync } = settings;
 
   const { sdk } = apiClientFactory(settings);
 
   let timeout: number | NodeJS.Timeout;
-  const interval = sync.pollRate * 1000;
+  const interval = sync.pollRateInSec * 1000;
 
   async function poll() {
     try {
-      const res = await sdk.sdkControllerGetFlagRules({
-        sdkContext,
-      });
+      const res = await sdk.sdkControllerGetFlagRules();
       log.debug(formatter(MESSAGE.POLL_SUCCESS));
       eventManager.internal.emit(
         FsIntervalEvent.UPDATE_RECEIVED,
         res?.flags ?? {},
       );
     } catch (e) {
-      const error = ServiceErrorFactory.create(e);
+      const error = await ServiceErrorFactory.create(e);
       log.error(
         formatter(MESSAGE.POLL_FAILED),
         error.path,

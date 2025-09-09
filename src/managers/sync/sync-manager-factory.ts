@@ -5,6 +5,7 @@ import { FsEvent, IEventManager } from '~managers/event/types';
 import { pollManager } from '~managers/sync/poll-manager';
 import { streamManager } from '~managers/sync/stream-manager';
 import { ISyncManager } from '~managers/sync/types';
+import { wsManager } from '~managers/sync/ws-manager';
 
 import { MESSAGE } from '~logger/messages';
 import { formatMsg } from '~logger/utils';
@@ -24,8 +25,11 @@ export function syncManagerFactory(
     case SyncType.Poll:
       manager = pollManager(settings, eventManager);
       break;
-    case SyncType.Stream:
+    case SyncType.Sse:
       manager = streamManager(settings, eventManager);
+      break;
+    case SyncType.Ws:
+      manager = wsManager(settings, eventManager);
       break;
     default:
       manager = {

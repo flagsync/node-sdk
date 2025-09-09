@@ -36,7 +36,7 @@
     "npm": ">=6"
   },
   "scripts": {
-    "build": "tsup",
+    "build": "tsc --noEmit && tsup",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint \"src/**/*.ts\" --fix",
     "test": "vitest"
@@ -45,6 +45,7 @@
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/node": "^20.14.2",
     "@types/semver": "^7.5.8",
+    "@types/ws": "^8.18.1",
     "@typescript-eslint/eslint-plugin": "^7.3.1",
     "@typescript-eslint/parser": "^7.3.1",
     "eslint": "^8.57.0",
@@ -59,9 +60,9 @@
     "vitest": "^1.4.0"
   },
   "dependencies": {
-    "axios": "^1.7.2",
     "deepmerge": "^4.3.1",
     "eventemitter3": "^5.0.1",
-    "eventsource": "^4.0.0"
+    "eventsource": "^4.0.0",
+    "ws": "^8.18.3"
   }
 }
