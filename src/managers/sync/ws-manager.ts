@@ -86,7 +86,6 @@ export const wsManager = (
   }
 
   function start() {
-    console.log('Starting ws manager');
     connect();
   }
 
