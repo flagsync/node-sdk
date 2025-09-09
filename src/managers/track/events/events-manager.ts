@@ -1,7 +1,7 @@
 import { FsSettings } from '~config/types.internal';
 
-import { ServiceErrorFactory } from '~api/error/service-error-factory';
 import { TrackClient } from '~api/clients/track-client';
+import { ServiceErrorFactory } from '~api/error/service-error-factory';
 
 import { FsEvent, IEventManager } from '~managers/event/types';
 import { EventsCache } from '~managers/track/events/events-cache';

@@ -36,9 +36,9 @@
     "npm": ">=6"
   },
   "scripts": {
-    "build": "tsc --noEmit && tsup",
+    "build": "tsup",
     "format": "prettier --write \"src/**/*.ts\"",
-    "lint": "eslint \"src/**/*.ts\" --fix",
+    "lint": "tsc --noEmit && eslint \"src/**/*.ts\" --fix",
     "test": "vitest"
   },
   "devDependencies": {

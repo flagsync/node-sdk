@@ -1,8 +1,8 @@
 import { FsSettings } from '~config/types.internal';
 
+import { SdkClient } from '~api/clients/sdk-client';
 import { FsServiceError } from '~api/error/service-error';
 import { ServiceErrorFactory } from '~api/error/service-error-factory';
-import { SdkClient } from '~api/clients/sdk-client';
 
 import { FsEvent, IEventManager } from '~managers/event/types';
 import { IStoreManager } from '~managers/storage/types';
