@@ -55,7 +55,6 @@ export const wsManager = (
           eventManager.internal.emit(FsIntervalEvent.UPDATE_RECEIVED, ruleset);
         }
       } catch (error) {
-        console.log('ERROR ONMESSAGE', error);
         log.error(formatter(MESSAGE.STREAM_MALFORMED_EVENT), error?.toString());
       }
     };
