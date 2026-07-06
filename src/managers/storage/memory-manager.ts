@@ -21,6 +21,17 @@ export function memoryManager(params: FsSettings): IStoreManager {
     };
   }
 
+  /**
+   * Replace the entire flag set. Unlike the merge in `set`, this drops flags
+   * absent from the incoming set — the only way deletes can take effect.
+   */
+  function replace(incoming: FsFlagSet) {
+    log.debug(formatter(MESSAGE.STORAGE_REPLACE_FLAG_RULES));
+    flagSet = {
+      ...incoming,
+    };
+  }
+
   function get(): FsFlagSet {
     log.debug(formatter(MESSAGE.STORAGE_GET_FLAG_RULES));
     return {
@@ -30,6 +41,7 @@ export function memoryManager(params: FsSettings): IStoreManager {
 
   return {
     set,
+    replace,
     get,
   };
 }

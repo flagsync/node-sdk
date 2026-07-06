@@ -51,8 +51,13 @@ export const wsManager = (
         const data = JSON.parse(event.data.toString());
         log.debug(formatter(MESSAGE.STREAM_MESSAGE_RECEIVED));
         if (data.type === 'flagUpdate') {
+          // Sunrise always pushes the entire ruleset, so replace the store
+          // rather than merge — this is how deletes propagate.
           const ruleset = data.flags as FsFlagSet;
-          eventManager.internal.emit(FsIntervalEvent.UPDATE_RECEIVED, ruleset);
+          eventManager.internal.emit(
+            FsIntervalEvent.UPDATE_RECEIVED_FULL,
+            ruleset,
+          );
         }
       } catch (error) {
         log.error(formatter(MESSAGE.STREAM_MALFORMED_EVENT), error?.toString());

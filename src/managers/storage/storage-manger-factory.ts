@@ -13,15 +13,23 @@ export function storageManagerFactory(
   const manager = memoryManager(params);
 
   /**
-   * The sync managers emit an internal event when an update is received, either
-   * by stream or poll. Streaming updates only include the changed flags, while
-   * poll updates include the entire flag set. The storage manager spreads
-   * the update, partial or full.
+   * The sync managers emit internal events when updates are received.
+   * UPDATE_RECEIVED carries a partial set (legacy SSE updates) and is merged;
+   * UPDATE_RECEIVED_FULL carries the entire flag set (poll, WebSocket, and
+   * full-sync SSE) and replaces the store, so deleted flags drop out.
    */
   eventManager.internal.on(
     FsIntervalEvent.UPDATE_RECEIVED,
     (flagSet: FsFlagSet) => {
       manager.set(flagSet);
+      eventManager.emit(FsEvent.SDK_UPDATE);
+    },
+  );
+
+  eventManager.internal.on(
+    FsIntervalEvent.UPDATE_RECEIVED_FULL,
+    (flagSet: FsFlagSet) => {
+      manager.replace(flagSet);
       eventManager.emit(FsEvent.SDK_UPDATE);
     },
   );

@@ -27,7 +27,7 @@ export function pollManager(
       const res = await sdk.sdkControllerGetFlagRules();
       log.debug(formatter(MESSAGE.POLL_SUCCESS));
       eventManager.internal.emit(
-        FsIntervalEvent.UPDATE_RECEIVED,
+        FsIntervalEvent.UPDATE_RECEIVED_FULL,
         res?.flags ?? {},
       );
     } catch (e) {
