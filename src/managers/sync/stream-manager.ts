@@ -11,6 +11,22 @@ import { formatMsg } from '~logger/utils';
 
 const formatter = formatMsg.bind(null, 'stream-manager');
 
+/**
+ * Next.js patches the global fetch with caching layers (the Data Cache, and
+ * in `next dev` an HMR cache) that clone the response and buffer its entire
+ * body. An SSE body never ends, so buffering it leaks memory and logs
+ * "Failed to set fetch cache <url> TypeError: terminated" once the connection
+ * drops. `eventsource` already sends `cache: 'no-store'`, but the dev-time
+ * HMR cache buffers even `no-store` requests, so prefer the original,
+ * un-patched fetch that Next.js exposes on the patched function.
+ */
+function getBaseFetch(): typeof fetch {
+  const patched = globalThis.fetch as typeof fetch & {
+    _nextOriginalFetch?: typeof fetch;
+  };
+  return patched._nextOriginalFetch ?? patched;
+}
+
 export const streamManager = (
   settings: FsSettings,
   eventManager: IEventManager,
@@ -26,7 +42,7 @@ export const streamManager = (
     es = new EventSource(`${urls.sse}/sse/sdk-updates/server`, {
       withCredentials: true,
       fetch: (input, init) =>
-        fetch(input, {
+        getBaseFetch()(input, {
           ...init,
           headers: {
             ...init.headers,
