@@ -19,9 +19,13 @@ export const wsManager = (
 
   let ws: WebSocket;
   let reconnectTimeout: NodeJS.Timeout | null = null;
+  let killed = false;
   const RECONNECT_DELAY = 5000;
 
   function connect() {
+    if (killed) {
+      return;
+    }
     const wsUrl = `${urls.ws.replace('https', 'wss')}/sdk/connect`;
 
     ws = new WebSocket(wsUrl, {
@@ -72,7 +76,7 @@ export const wsManager = (
         formatter(MESSAGE.STREAM_CONN_CLOSE),
         `Code: ${event.code}, Reason: ${event.reason}`,
       );
-      if (event.code !== 1000) {
+      if (!killed && event.code !== 1000) {
         log.debug(formatter(MESSAGE.STREAM_RECONNECT));
         reconnectTimeout = setTimeout(connect, RECONNECT_DELAY);
       }
@@ -93,8 +97,22 @@ export const wsManager = (
     connect();
   }
 
+  /**
+   * A kill must tear down whatever state the connection cycle is in: a
+   * pending reconnect timer or a CONNECTING socket would otherwise keep the
+   * event loop alive (and reconnect after shutdown), hanging SIGINT.
+   */
   function kill() {
-    if (ws && ws.readyState === ws.OPEN) {
+    killed = true;
+    if (reconnectTimeout) {
+      clearTimeout(reconnectTimeout);
+      reconnectTimeout = null;
+    }
+    if (ws && ws.readyState === ws.CONNECTING) {
+      // close() mid-handshake surfaces an abort error; terminate() doesn't.
+      log.debug(formatter(MESSAGE.STREAM_CONN_CLOSING));
+      ws.terminate();
+    } else if (ws && ws.readyState === ws.OPEN) {
       log.debug(formatter(MESSAGE.STREAM_CONN_CLOSING));
       // Use code 1000 for normal closure
       ws.close(1000, 'SDK shutting down.');
