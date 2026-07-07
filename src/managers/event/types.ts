@@ -43,6 +43,7 @@ export type FsEventType = (typeof FsEvent)[keyof typeof FsEvent];
 
 export const FsIntervalEvent = {
   UPDATE_RECEIVED: 'state::update-received',
+  UPDATE_RECEIVED_FULL: 'state::update-received-full',
 } as const;
 
 export type FsIntervalEventType =
@@ -61,4 +62,5 @@ export interface FsEventTypePayload {
 
 export interface FsInternalEventTypePayload {
   [FsIntervalEvent.UPDATE_RECEIVED]: EventFlagSetPayload;
+  [FsIntervalEvent.UPDATE_RECEIVED_FULL]: EventFlagSetPayload;
 }

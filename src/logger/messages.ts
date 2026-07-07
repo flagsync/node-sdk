@@ -5,6 +5,7 @@ const KILL_MANAGER_MESSAGE = {
 
 const STORAGE_MANAGER_MESSAGE = {
   STORAGE_SET_FLAG_RULES: 'storing flag rules',
+  STORAGE_REPLACE_FLAG_RULES: 'replacing flag rules',
   STORAGE_GET_FLAG_RULES: 'getting flag rules',
 } as const;
 
@@ -16,10 +17,14 @@ const SERVICE_MANAGER_MESSAGE = {
 const STREAM_MANAGER_MESSAGE = {
   STREAM_CONNECTED: 'connection established',
   STREAM_MESSAGE_RECEIVED: 'message received',
+  STREAM_FULL_SET_RECEIVED: 'full flag set received',
   STREAM_CONN_OPEN: 'connection is open',
   STREAM_CONN_CLOSE: 'ungraceful connection close',
   STREAM_CONN_CLOSING: 'gracefully closing event stream',
   STREAM_RECONNECT: 'reestablishing connection',
+  STREAM_STALE: 'no events or heartbeats received, restarting connection',
+  STREAM_RESYNC_SUCCESS: 'flag rules resynced after reconnect',
+  STREAM_RESYNC_FAILED: 'flag rules resync failed',
   STREAM_MALFORMED_EVENT: 'malformed message event',
   STREAM_UNKNOWN_EVENT_STATE: 'unknown error state',
 } as const;
